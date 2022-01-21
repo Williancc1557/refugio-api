@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import { pinoConfig } from "../../logger/logger";
 import type { CreateSchedulingUseCase } from "./CreateSchedulingUseCase";
 
 export class CreateSchedulingController {
@@ -7,16 +8,17 @@ export class CreateSchedulingController {
     ) { }
 
     public async handle(req: Request, res: Response): Promise<Response> {
-        const { nome, telefone, npessoas, preco, dataReplaced } = req.body;
+        pinoConfig.info("CreateSchedulingController handle executed");
+        const { nome, telefone, npessoas, preco, datetime } = req.params;
         try {
             await this.createSchedulingUseCase.execute({
-                userContact: telefone,
-                userCost: preco,
-                userDate: dataReplaced,
+                userContact: Number(telefone),
+                userCost: Number(preco),
+                userDate: datetime,
                 userName: nome,
-                userPeaplesNumber: npessoas,
+                userPeaplesNumber: Number(npessoas),
             });
-
+            pinoConfig.info("Scheduling succefull!");
             return res.send("Agendamento realizado com sucesso!");
         } catch (err) {
             const failRequestStatusCode = 500;

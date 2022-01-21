@@ -7,7 +7,7 @@ export class Scheduling {
 
     public readonly userCost: number;
 
-    public readonly userDate: string;
+    public userDate: string;
 
     public constructor(params: Scheduling) {
         Object.assign(this, params);
